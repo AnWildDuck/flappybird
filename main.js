@@ -17,8 +17,8 @@ class Bird {
     update(dt, pipes) {
         this.move(dt);
         this.show();
-
-        if (this.touchingPipe(pipes)) {
+        
+        if (this.touchingPipe(pipes) || this.y >= 500 - 12 * 2 - 23) {
             reset()
         }
     }
