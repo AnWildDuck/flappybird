@@ -130,7 +130,7 @@ class Pipes {
 
     constructor() {
         this.pipes = [];
-        this.nextSpawn = 0;
+        this.nextSpawn = 1;
 
         this.scale = 2;
 
@@ -203,15 +203,38 @@ function runGame() {
     let dt = (thisTime - lastTime) / 1000;
     lastTime = thisTime;
 
-    ctx.fillStyle = '#6ebdc7';
-    ctx.fillRect(0, 0, 500, 500);
-
     backgroundImg.onload = showBackground();
 
     pipes.update(dt);
     bird.update(dt, pipes.pipes);
 
     groundControl(dt);
+}
+
+
+let start1 = new Image();
+start1.src = 'startMessage.png';
+
+let start2 = new Image();
+start2.src = 'startMessage2.png';
+
+time = 0;
+function showStartImage(dt) {
+
+    time += dt;
+    if (time >= 2) {
+        time -= 2
+    }
+
+    let image;
+    if (time >= 1) {
+        image = start1;
+    } else {
+        image = start2;
+    }
+
+    ctx.drawImage(image, 0, 0, 500, 500);
+
 }
 
 function preGame() {
@@ -221,18 +244,17 @@ function preGame() {
     let dt = (thisTime - lastTime) / 1000;
     lastTime = thisTime;
 
-    ctx.fillStyle = '#6ebdc7';
-    ctx.fillRect(0, 0, 500, 500);
-
     backgroundImg.onload = showBackground();
 
     bird.show();
     bird.hover(dt);
 
     groundControl(dt);
+    showStartImage(dt)
 }
 
 let stage = 0;
+ctx.imageSmoothingEnabled = false;
 function loop() {
 
     if (key.isPressed('space') && stage === 0) {
