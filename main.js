@@ -12,6 +12,8 @@ class Bird {
         let imgScale = 2;
         this.width = 17 * imgScale;
         this.height = 12 * imgScale;
+
+        this.distance = 0;
     }
 
     update(dt, pipes) {
@@ -21,6 +23,11 @@ class Bird {
         if (this.touchingPipe(pipes) || this.y >= 500 - 12 * 2 - 23) {
             reset()
         }
+    }
+
+    hover(dt) {
+        this.distance += dt;
+        this.y = Math.sin(this.distance * 3) * 20 + 250
     }
 
     show() {
@@ -48,7 +55,7 @@ class Bird {
         this.x += 0;
 
         // Flap
-        if (key.isPressed('up')) {
+        if (key.isPressed('space')) {
             if (this.y > 10) {
                 this.velocityY = -350;
             }
@@ -184,17 +191,18 @@ let pipes = new Pipes();
 function reset() {
     bird = new Bird();
     pipes = new Pipes();
+    stage = 0;
 }
 
 let lastTime = performance.now();
-function loop() {
+
+function runGame() {
 
     // Get delta time
     let thisTime = performance.now();
     let dt = (thisTime - lastTime) / 1000;
     lastTime = thisTime;
 
-    // Put functions here dood
     ctx.fillStyle = '#6ebdc7';
     ctx.fillRect(0, 0, 500, 500);
 
@@ -204,6 +212,38 @@ function loop() {
     bird.update(dt, pipes.pipes);
 
     groundControl(dt);
+}
+
+function preGame() {
+
+    // Get delta time
+    let thisTime = performance.now();
+    let dt = (thisTime - lastTime) / 1000;
+    lastTime = thisTime;
+
+    ctx.fillStyle = '#6ebdc7';
+    ctx.fillRect(0, 0, 500, 500);
+
+    backgroundImg.onload = showBackground();
+
+    bird.show();
+    bird.hover(dt);
+
+    groundControl(dt);
+}
+
+let stage = 0;
+function loop() {
+
+    if (key.isPressed('space') && stage === 0) {
+        stage = 1
+    }
+
+    if (stage === 0) {
+        preGame();
+    } else {
+        runGame()
+    }
 
     requestAnimationFrame(loop);
 }
