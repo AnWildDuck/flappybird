@@ -3,6 +3,7 @@ let ctx = document.getElementById('canvas').getContext('2d');
 class Bird {
 
     constructor() {
+        this.x = 50;
         this.y = 250;
         this.velocityY = 0;
 
@@ -31,7 +32,7 @@ class Bird {
     }
 
     show() {
-        ctx.drawImage(this.image, 50, this.y, this.width, this.height);
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
 
         // ctx.fillStyle = 'black';
         // ctx.fillRect(this.x, this.y, 10, 10);
@@ -50,10 +51,6 @@ class Bird {
     }
 
     move(dt) {
-
-        // Move forward
-        this.x += 0;
-
         // Flap
         if (spaceState) {
             if (this.y > 10) {
@@ -73,8 +70,9 @@ class Bird {
 
 
 class Pipe {
-    constructor(y, side, image) {
+    constructor(y, side, image, id) {
         this.image = image;
+        this.id = id;
 
         this.scale = 2;
         this.x = 500;
@@ -133,6 +131,8 @@ class Pipes {
         this.pipes = [];
         this.nextSpawn = 1;
 
+        this.totalPipes = 0;
+
         this.scale = 2;
 
         this.image1 = new Image();
@@ -143,19 +143,33 @@ class Pipes {
 
     update(dt) {
         this.spawn(dt);
-
         for (let pipe of this.pipes) {
             pipe.update(dt);
         }
+
+        this.removeOld()
+    }
+
+    removeOld() {
+        let okayPipes = [];
+        for (let pipe of this.pipes) {
+            if (pipe.x > -200) {
+                okayPipes.push(pipe);
+            }
+        }
+        this.pipes = okayPipes;
     }
 
     spawn(dt) {
         if (this.nextSpawn <= 0) {
+            let gap = 300;
 
-            let y = Math.round(Math.random() * 350) + 150;
+            let y = Math.round(Math.random() * (500 - gap) + gap);
 
-            let obj = new Pipe(y, 0, this.image1);
-            let obj2 = new Pipe(y - 150, 1, this.image2);
+            let obj = new Pipe(y, 0, this.image1, this.totalPipes);
+            let obj2 = new Pipe(y - gap, 1, this.image2, this.totalPipes);
+
+            this.totalPipes += 1;
 
             this.pipes.push(obj);
             this.pipes.push(obj2);
@@ -165,6 +179,21 @@ class Pipes {
             this.nextSpawn -= dt;
         }
     }
+}
+
+let score = 0;
+function updateScore() {
+    let scores = [];
+
+    // What is the closest pipe behind the bird?
+    for (let pipe of pipes.pipes) {
+        if (pipe.x < bird.x) {
+            scores.push(pipe.id)
+        }
+    }
+
+    score = Math.max.apply(null, scores) + 1;
+    score = Math.max(score, 0);
 }
 
 let dist = 0;
@@ -207,6 +236,7 @@ function updateSpace() {
 function reset() {
     bird = new Bird();
     pipes = new Pipes();
+    updateScore();
     stage = 0;
 }
 
@@ -219,8 +249,11 @@ function runGame() {
         return;
     }
 
-
+    updateScore();
     updateSpace();
+
+    console.log(score);
+
     // Get delta time
     let thisTime = performance.now();
     let dt = (thisTime - lastTime) / 1000;
@@ -231,6 +264,8 @@ function runGame() {
     pipes.update(dt);
     bird.update(dt, pipes.pipes);
 
+    ctx.font = '48px arial';
+    ctx.fillText(score.toString(), 10, 50, 500);
     groundControl(dt);
 }
 
