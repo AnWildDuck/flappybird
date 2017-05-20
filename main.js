@@ -55,9 +55,10 @@ class Bird {
         this.x += 0;
 
         // Flap
-        if (key.isPressed('space')) {
+        if (spaceState) {
             if (this.y > 10) {
-                this.velocityY = -350;
+                // console.log(performance.now());
+                this.velocityY = -500;
             }
         }
 
@@ -188,6 +189,21 @@ function groundControl(dt) {
 let bird = new Bird();
 let pipes = new Pipes();
 
+let spaceState = 0;
+let lastSpace = 0;
+function updateSpace() {
+    newState = Number(key.isPressed('space'));
+
+    if (lastSpace - newState === -1) {
+        spaceState = true
+    } else {
+        spaceState = false
+    }
+
+    lastSpace = newState;
+}
+
+
 function reset() {
     bird = new Bird();
     pipes = new Pipes();
@@ -198,6 +214,13 @@ let lastTime = performance.now();
 
 function runGame() {
 
+    if (key.isPressed('k')) {
+        lastTime = performance.now();
+        return;
+    }
+
+
+    updateSpace();
     // Get delta time
     let thisTime = performance.now();
     let dt = (thisTime - lastTime) / 1000;
