@@ -2,7 +2,7 @@
 canvas = document.getElementById('canvas');
 ctx = canvas.getContext('2d');
 
-let windowScale = 1;
+let windowScale = 0.965;
 let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowScale];
 
 canvas.width = windowSize[0];
