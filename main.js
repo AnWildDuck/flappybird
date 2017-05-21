@@ -6,6 +6,20 @@ function loadImage(src) {
     return image;
 }
 
+function drawImage(image, x, y, width, height, rotation) {
+
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+
+    ctx.drawImage(image, 0, 0, width, height);
+
+    ctx.rotate(-rotation);
+    ctx.translate(-x, -y);
+
+
+    // ctx.rotate(rotation);
+}
+
 class Bird {
 
     constructor() {
@@ -40,10 +54,11 @@ class Bird {
 
     show() {
 
-        console.log(this.velocityY);
+        // console.log(this.velocityY);
 
         let image;
         let maxSpeed = 175;
+
         if (this.velocityY > maxSpeed) {
             image = this.image1;
         } else if (this.velocityY < -maxSpeed) {
@@ -51,7 +66,10 @@ class Bird {
         } else {
             image = this.image2;
         }
-        ctx.drawImage(image, this.x, this.y, this.width, this.height);
+
+        let angle = (this.velocityY - 200) / 2000;
+        console.log(angle);
+        drawImage(image, this.x, this.y, this.width, this.height, angle);
 
         // ctx.fillStyle = 'black';
         // ctx.fillRect(this.x, this.y, 10, 10);
@@ -271,7 +289,7 @@ function runGame() {
     updateScore();
     updateSpace();
 
-    console.log(score);
+    // console.log(score);
 
     // Get delta time
     let thisTime = performance.now();
