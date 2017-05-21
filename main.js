@@ -1,5 +1,11 @@
 let ctx = document.getElementById('canvas').getContext('2d');
 
+function loadImage(src) {
+    let image = new Image();
+    image.src = src;
+    return image;
+}
+
 class Bird {
 
     constructor() {
@@ -7,8 +13,9 @@ class Bird {
         this.y = 250;
         this.velocityY = 0;
 
-        this.image = new Image();
-        this.image.src = 'bird.png';
+        this.image1 = loadImage('bird1.png');
+        this.image2 = loadImage('bird2.png');
+        this.image3 = loadImage('bird3.png');
 
         let imgScale = 2;
         this.width = 17 * imgScale;
@@ -32,7 +39,19 @@ class Bird {
     }
 
     show() {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+
+        console.log(this.velocityY);
+
+        let image;
+        let maxSpeed = 175;
+        if (this.velocityY > maxSpeed) {
+            image = this.image1;
+        } else if (this.velocityY < -maxSpeed) {
+            image = this.image3;
+        } else {
+            image = this.image2;
+        }
+        ctx.drawImage(image, this.x, this.y, this.width, this.height);
 
         // ctx.fillStyle = 'black';
         // ctx.fillRect(this.x, this.y, 10, 10);
@@ -162,7 +181,7 @@ class Pipes {
 
     spawn(dt) {
         if (this.nextSpawn <= 0) {
-            let gap = 300;
+            let gap = 150;
 
             let y = Math.round(Math.random() * (500 - gap) + gap);
 
