@@ -2,7 +2,7 @@
 canvas = document.getElementById('canvas');
 ctx = canvas.getContext('2d');
 
-let windowScale = 0.8;
+let windowScale = 1;
 let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowScale];
 
 canvas.width = windowSize[0];
@@ -208,10 +208,9 @@ class Pipes {
     spawn(dt) {
         if (this.nextSpawn <= 0) {
             let scale = windowSize[1] / 500;
-            let gap = 150 * scale;
+            let gap = 100 * scale;
 
             let y = Math.round(Math.random() * (500 - gap) + gap);
-            console.log(y);
 
             let obj = new Pipe(y, 0, this.image1, this.totalPipes);
             let obj2 = new Pipe(y - gap, 1, this.image2, this.totalPipes);
@@ -389,8 +388,6 @@ ctx.imageSmoothingEnabled = false;
 let fontSize = (windowSize[1] / 500) * 48;
 let fontString = Math.round(eval(fontSize)).toString() + 'px Main';
 ctx.font = fontString;
-
-console.log(fontString);
 
 function loop() {
 
