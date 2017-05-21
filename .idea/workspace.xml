@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c53093d3-b8f0-4fdd-a4ad-3a0fd580beac" name="Default" comment="k">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/startMessage.png" afterPath="$PROJECT_DIR$/startMessage.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/startMessage2.png" afterPath="$PROJECT_DIR$/startMessage2.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.js" afterPath="$PROJECT_DIR$/main.js" />
     </list>
@@ -24,8 +25,8 @@
             <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/main.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="323">
-                    <caret line="321" column="4" lean-forward="false" selection-start-line="321" selection-start-column="4" selection-end-line="321" selection-end-column="4" />
+                  <state relative-caret-position="88">
+                    <caret line="4" column="21" lean-forward="false" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
                     <folding />
                   </state>
                 </provider>
@@ -45,8 +46,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="36" lean-forward="false" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+            <state relative-caret-position="374">
+              <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -56,32 +57,32 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>conso</find>
-      <find>consol</find>
-      <find>console</find>
-      <find>console.</find>
-      <find>console.l</find>
-      <find>console.lo</find>
-      <find>console.lo</find>
-      <find>this</find>
-      <find>this.x</find>
-      <find>con</find>
+      <find>hover</find>
+      <find>consl</find>
+      <find>50</find>
+      <find>500</find>
+      <find>d</find>
+      <find>draw</find>
+      <find>b</find>
+      <find>back</find>
+      <find>backgrou</find>
+      <find>backgroun</find>
+      <find>background</find>
+      <find>show</find>
+      <find>showB</find>
+      <find>showBa</find>
+      <find>showBack</find>
+      <find>c</find>
+      <find>condol</find>
+      <find>condo</find>
+      <find>cond</find>
+      <find>consike</find>
       <find>consik</find>
       <find>consi</find>
-      <find>x</find>
-      <find>cobn</find>
-      <find>cob</find>
-      <find>co</find>
-      <find>conseo</find>
-      <find>conse</find>
-      <find>f</find>
-      <find>font</find>
-      <find>h</find>
-      <find>hov</find>
-      <find>hove</find>
-      <find>hover</find>
-      <find>c</find>
-      <find>consl</find>
+      <find>conole</find>
+      <find>conol</find>
+      <find>cono</find>
+      <find>con</find>
       <find>cons</find>
       <find>conso</find>
       <find>consol</find>
@@ -287,12 +288,12 @@
       <workItem from="1494736489188" duration="1493000" />
       <workItem from="1494738560694" duration="5477000" />
       <workItem from="1494926738533" duration="3057000" />
-      <workItem from="1495311573378" duration="10009000" />
+      <workItem from="1495311573378" duration="14201000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35144000" />
+    <option name="totallyTimeSpent" value="39336000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -412,16 +413,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="36" lean-forward="false" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+        <state relative-caret-position="374">
+          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="321" column="4" lean-forward="false" selection-start-line="321" selection-start-column="4" selection-end-line="321" selection-end-column="4" />
+        <state relative-caret-position="88">
+          <caret line="4" column="21" lean-forward="false" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
           <folding />
         </state>
       </provider>

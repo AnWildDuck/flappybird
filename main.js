@@ -1,5 +1,18 @@
 // All original code, no original ideas.
-let ctx = document.getElementById('canvas').getContext('2d');
+canvas = document.getElementById('canvas');
+ctx = canvas.getContext('2d');
+
+let windowScale = 0.8;
+let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowScale];
+
+canvas.width = windowSize[0];
+canvas.height = windowSize[1];
+
+// ctx.style.width = windowSize[0];
+// ctx.style.height = windowSize[1];
+
+
+console.log(windowSize);
 
 function loadImage(src) {
     let image = new Image();
@@ -43,7 +56,7 @@ class Bird {
         this.move(dt);
         this.show();
         
-        if (this.touchingPipe(pipes) || this.y >= 500 - 12 * 2 - 23) {
+        if (this.touchingPipe(pipes) || this.y >= windowSize[1] - 12 * 2 - 23) {
             reset()
         }
     }
@@ -58,9 +71,6 @@ class Bird {
     }
 
     show(maxSpeed = 175) {
-
-        // console.log(this.velocityY);
-
         let image;
 
         if (this.velocityY > maxSpeed) {
@@ -72,7 +82,6 @@ class Bird {
         }
 
         let angle = (this.velocityY - 200) / 2000;
-        // console.log(angle);
         drawImage(image, this.x, this.y, this.width, this.height, angle);
 
         // ctx.fillStyle = 'black';
@@ -95,7 +104,6 @@ class Bird {
         // Flap
         if (spaceState || touched) {
             if (this.y > 10) {
-                // console.log(performance.now());
                 this.velocityY = -500;
             }
         }
@@ -105,7 +113,7 @@ class Bird {
         this.velocityY += dt * 1500;
         this.velocityY = Math.min(this.velocityY, 500);
 
-        this.y = Math.min(500 - 12 * 2 - 23, this.y)
+        this.y = Math.min(windowSize[1] - 12 * 2 - 23, this.y)
     }
 }
 
@@ -116,7 +124,7 @@ class Pipe {
         this.id = id;
 
         this.scale = 2;
-        this.x = 500;
+        this.x = windowSize[0];
 
         this.width = 20 * this.scale;
         this.height = 200 * this.scale;
@@ -205,7 +213,7 @@ class Pipes {
         if (this.nextSpawn <= 0) {
             let gap = 150;
 
-            let y = Math.round(Math.random() * (500 - gap) + gap);
+            let y = Math.round(Math.random() * (windowSize[1] - gap) + gap);
 
             let obj = new Pipe(y, 0, this.image1, this.totalPipes);
             let obj2 = new Pipe(y - gap, 1, this.image2, this.totalPipes);
@@ -243,16 +251,18 @@ groundImg.src = 'ground.png';
 
 function groundControl(dt) {
 
+    let scale = windowSize[1] / 500;
+
     // Move
     dist -= dt * 100;
 
-    if (dist <= -496) {
-        dist += 496
+    if (dist <= -496 * scale) {
+        dist += 496 * scale
     }
 
     // Show
-    ctx.drawImage(groundImg, dist, 500 - 23);
-    ctx.drawImage(groundImg, dist + 496, 500 - 23);
+    ctx.drawImage(groundImg, dist, windowSize[1] - 23 * scale, 496 * scale, 23 * scale);
+    ctx.drawImage(groundImg, dist + 496 * scale, windowSize[1] - 23 * scale, 496 * scale, 23 * scale);
 
 }
 
@@ -290,6 +300,18 @@ function reset() {
 }
 
 let lastTime = performance.now();
+function getdt() {
+    let thisTime = performance.now();
+    let dt = (thisTime - lastTime) / 1000;
+    lastTime = thisTime;
+
+    if (dt > 1) {
+        dt = 0;
+    }
+
+    return dt;
+}
+
 
 function runGame() {
 
@@ -301,22 +323,16 @@ function runGame() {
     updateScore();
     updateSpace();
 
-    // console.log(score);
-
-    // Get delta time
-    let thisTime = performance.now();
-    let dt = (thisTime - lastTime) / 1000;
-    lastTime = thisTime;
-
-    backgroundImg.onload = showBackground();
+    dt = getdt();
+    showBackground();
 
     pipes.update(dt);
     bird.update(dt, pipes.pipes);
 
     ctx.fillStyle = '#000000';
-    ctx.fillText(score.toString(), 15, 55, 500);
+    ctx.fillText(score.toString(), 15, 55, windowSize[1]);
     ctx.fillStyle = '#ffffff';
-    ctx.fillText(score.toString(), 10, 50, 500);
+    ctx.fillText(score.toString(), 10, 50, windowSize[1]);
 
     groundControl(dt);
     updateTouch();
@@ -344,17 +360,16 @@ function showStartImage(dt) {
         image = start2;
     }
 
-    ctx.drawImage(image, 0, 0, 500, 500);
+    let scale = 2;
+    let size = [47 * scale, 20 * scale];
+
+    ctx.drawImage(image, (windowSize[0] - size[0]) / 2, (windowSize[1] - size[1]) / 2, size[0], size[1]);
 }
 
 function preGame() {
 
-    // Get delta time
-    let thisTime = performance.now();
-    let dt = (thisTime - lastTime) / 1000;
-    lastTime = thisTime;
-
-    backgroundImg.onload = showBackground();
+    dt = getdt();
+    showBackground();
 
     bird.show(maxSpeed = 15);
     bird.hover(dt);
@@ -385,7 +400,13 @@ function loop() {
 let backgroundImg = new Image();
 backgroundImg.src = 'background.png';
 function showBackground() {
-    ctx.drawImage(backgroundImg, 0, 500 - backgroundImg.height);
+
+    // How many do we need?
+    let amount = Math.ceil(windowSize[0] / 500);
+
+    for (let i = 0; i < amount; i ++) {
+        ctx.drawImage(backgroundImg, windowSize[0] * i, 0, windowSize[1], windowSize[1]);
+    }
 }
 
 // Run the code
