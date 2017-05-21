@@ -4,7 +4,6 @@
     <list default="true" id="c53093d3-b8f0-4fdd-a4ad-3a0fd580beac" name="Default" comment="k">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/startMessage.png" afterPath="$PROJECT_DIR$/startMessage.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/startMessage2.png" afterPath="$PROJECT_DIR$/startMessage2.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.js" afterPath="$PROJECT_DIR$/main.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -25,8 +24,8 @@
             <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/main.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="88">
-                    <caret line="4" column="21" lean-forward="false" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+                  <state relative-caret-position="528">
+                    <caret line="370" column="27" lean-forward="true" selection-start-line="370" selection-start-column="27" selection-end-line="370" selection-end-column="27" />
                     <folding />
                   </state>
                 </provider>
@@ -57,22 +56,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>hover</find>
-      <find>consl</find>
-      <find>50</find>
-      <find>500</find>
-      <find>d</find>
-      <find>draw</find>
-      <find>b</find>
-      <find>back</find>
-      <find>backgrou</find>
-      <find>backgroun</find>
-      <find>background</find>
       <find>show</find>
       <find>showB</find>
       <find>showBa</find>
       <find>showBack</find>
-      <find>c</find>
       <find>condol</find>
       <find>condo</find>
       <find>cond</find>
@@ -84,9 +71,21 @@
       <find>cono</find>
       <find>con</find>
       <find>cons</find>
-      <find>conso</find>
       <find>consol</find>
+      <find>c</find>
+      <find>conso</find>
       <find>console</find>
+      <find>console.</find>
+      <find>gr</find>
+      <find>ground</find>
+      <find>groundC</find>
+      <find>groundCon</find>
+      <find>start</find>
+      <find>s</find>
+      <find>score</find>
+      <find>scor</find>
+      <find>t</find>
+      <find>text</find>
     </findStrings>
     <replaceStrings>
       <replace>let</replace>
@@ -288,12 +287,12 @@
       <workItem from="1494736489188" duration="1493000" />
       <workItem from="1494738560694" duration="5477000" />
       <workItem from="1494926738533" duration="3057000" />
-      <workItem from="1495311573378" duration="14201000" />
+      <workItem from="1495311573378" duration="18598000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39336000" />
+    <option name="totallyTimeSpent" value="43733000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -421,8 +420,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="21" lean-forward="false" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+        <state relative-caret-position="528">
+          <caret line="370" column="27" lean-forward="true" selection-start-line="370" selection-start-column="27" selection-end-line="370" selection-end-column="27" />
           <folding />
         </state>
       </provider>

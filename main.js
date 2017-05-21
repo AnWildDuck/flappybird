@@ -8,12 +8,6 @@ let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowSc
 canvas.width = windowSize[0];
 canvas.height = windowSize[1];
 
-// ctx.style.width = windowSize[0];
-// ctx.style.height = windowSize[1];
-
-
-console.log(windowSize);
-
 function loadImage(src) {
     let image = new Image();
     image.src = src;
@@ -56,7 +50,7 @@ class Bird {
         this.move(dt);
         this.show();
         
-        if (this.touchingPipe(pipes) || this.y >= windowSize[1] - 12 * 2 - 23) {
+        if (this.touchingPipe(pipes) || this.y * (windowSize[1] / 500) >= windowSize[1] - 12 * 2 - 23) {
             reset()
         }
     }
@@ -72,6 +66,7 @@ class Bird {
 
     show(maxSpeed = 175) {
         let image;
+        let scale = windowSize[1] / 500;
 
         if (this.velocityY > maxSpeed) {
             image = this.image1;
@@ -82,14 +77,14 @@ class Bird {
         }
 
         let angle = (this.velocityY - 200) / 2000;
-        drawImage(image, this.x, this.y, this.width, this.height, angle);
+        drawImage(image, this.x * scale, this.y * scale, this.width * scale, this.height * scale, angle);
 
         // ctx.fillStyle = 'black';
         // ctx.fillRect(this.x, this.y, 10, 10);
     }
 
     touchingPipe(pipes) {
-        let thisRect = [50, this.y, this.width, this.height];
+        let thisRect = [this.x, this.y, this.width, this.height];
 
         for (let pipe of pipes) {
             if (pipe.touching(thisRect)) {
@@ -124,7 +119,7 @@ class Pipe {
         this.id = id;
 
         this.scale = 2;
-        this.x = windowSize[0];
+        this.x = windowSize[0] / (windowSize[1] / 500);
 
         this.width = 20 * this.scale;
         this.height = 200 * this.scale;
@@ -142,7 +137,8 @@ class Pipe {
     }
 
     show() {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        let scale = windowSize[1] / 500;
+        ctx.drawImage(this.image, this.x * scale, this.y * scale, this.width * scale, this.height * scale);
     }
 
     move(dt) {
@@ -211,9 +207,11 @@ class Pipes {
 
     spawn(dt) {
         if (this.nextSpawn <= 0) {
-            let gap = 150;
+            let scale = windowSize[1] / 500;
+            let gap = 150 * scale;
 
-            let y = Math.round(Math.random() * (windowSize[1] - gap) + gap);
+            let y = Math.round(Math.random() * (500 - gap) + gap);
+            console.log(y);
 
             let obj = new Pipe(y, 0, this.image1, this.totalPipes);
             let obj2 = new Pipe(y - gap, 1, this.image2, this.totalPipes);
@@ -245,7 +243,13 @@ function updateScore() {
     score = Math.max(score, 0);
 }
 
-let dist = 0;
+let grounds = Math.ceil(windowSize[0] / 496) + 1;
+let dists = [];
+
+for (let i = 0; i < grounds; i ++) {
+    dists.push(i * 496)
+}
+
 let groundImg = new Image();
 groundImg.src = 'ground.png';
 
@@ -253,17 +257,18 @@ function groundControl(dt) {
 
     let scale = windowSize[1] / 500;
 
-    // Move
-    dist -= dt * 100;
+    let newDists = [];
+    for (dist of dists) {
 
-    if (dist <= -496 * scale) {
-        dist += 496 * scale
+        newDist = dist - 100 * dt;
+        if (newDist < -496) {
+            newDist += 496 * (grounds);
+        }
+
+        newDists.push(newDist);
+        ctx.drawImage(groundImg, newDist * scale, windowSize[1] - 23 * scale, 496 * scale, 23 * scale);
     }
-
-    // Show
-    ctx.drawImage(groundImg, dist, windowSize[1] - 23 * scale, 496 * scale, 23 * scale);
-    ctx.drawImage(groundImg, dist + 496 * scale, windowSize[1] - 23 * scale, 496 * scale, 23 * scale);
-
+    dists = newDists;
 }
 
 let bird = new Bird();
@@ -312,7 +317,6 @@ function getdt() {
     return dt;
 }
 
-
 function runGame() {
 
     if (key.isPressed('k')) {
@@ -329,10 +333,11 @@ function runGame() {
     pipes.update(dt);
     bird.update(dt, pipes.pipes);
 
+    let scale = windowSize[1] / 500;
     ctx.fillStyle = '#000000';
-    ctx.fillText(score.toString(), 15, 55, windowSize[1]);
+    ctx.fillText(score.toString(), scale * 15, 55 * scale, windowSize[1]);
     ctx.fillStyle = '#ffffff';
-    ctx.fillText(score.toString(), 10, 50, windowSize[1]);
+    ctx.fillText(score.toString(), scale* 10, 50 * scale, windowSize[1]);
 
     groundControl(dt);
     updateTouch();
@@ -360,7 +365,7 @@ function showStartImage(dt) {
         image = start2;
     }
 
-    let scale = 2;
+    let scale = 2 * (windowSize[1] / 500);
     let size = [47 * scale, 20 * scale];
 
     ctx.drawImage(image, (windowSize[0] - size[0]) / 2, (windowSize[1] - size[1]) / 2, size[0], size[1]);
@@ -380,7 +385,13 @@ function preGame() {
 
 let stage = 0;
 ctx.imageSmoothingEnabled = false;
-ctx.font = '48px Main';
+
+let fontSize = (windowSize[1] / 500) * 48;
+let fontString = Math.round(eval(fontSize)).toString() + 'px Main';
+ctx.font = fontString;
+
+console.log(fontString);
+
 function loop() {
 
     if ((key.isPressed('space') || touched) && stage === 0) {
@@ -405,7 +416,7 @@ function showBackground() {
     let amount = Math.ceil(windowSize[0] / 500);
 
     for (let i = 0; i < amount; i ++) {
-        ctx.drawImage(backgroundImg, windowSize[0] * i, 0, windowSize[1], windowSize[1]);
+        ctx.drawImage(backgroundImg, windowSize[1] * i, 0, windowSize[1], windowSize[1]);
     }
 }
 
