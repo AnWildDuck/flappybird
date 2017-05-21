@@ -1,3 +1,4 @@
+// All original code, no original ideas.
 let ctx = document.getElementById('canvas').getContext('2d');
 
 function loadImage(src) {
@@ -24,8 +25,8 @@ class Bird {
 
     constructor() {
         this.x = 50;
-        this.y = 250;
-        this.velocityY = 0;
+        this.y = 200;
+        this.velocityY = -200;
 
         this.image1 = loadImage('bird1.png');
         this.image2 = loadImage('bird2.png');
@@ -49,15 +50,18 @@ class Bird {
 
     hover(dt) {
         this.distance += dt;
-        this.y = Math.sin(this.distance * 3) * 20 + 250
+        // this.y = Math.sin(this.distance * 3) * 20 + 250
+
+        this.velocityY = Math.sin(this.distance * 3) * 100;
+        this.y += this.velocityY * dt;
+
     }
 
-    show() {
+    show(maxSpeed = 175) {
 
         // console.log(this.velocityY);
 
         let image;
-        let maxSpeed = 175;
 
         if (this.velocityY > maxSpeed) {
             image = this.image1;
@@ -68,7 +72,7 @@ class Bird {
         }
 
         let angle = (this.velocityY - 200) / 2000;
-        console.log(angle);
+        // console.log(angle);
         drawImage(image, this.x, this.y, this.width, this.height, angle);
 
         // ctx.fillStyle = 'black';
@@ -89,7 +93,7 @@ class Bird {
 
     move(dt) {
         // Flap
-        if (spaceState) {
+        if (spaceState || touched) {
             if (this.y > 10) {
                 // console.log(performance.now());
                 this.velocityY = -500;
@@ -269,6 +273,14 @@ function updateSpace() {
     lastSpace = newState;
 }
 
+let touched;
+window.addEventListener('touchstart', function updateTouch() {
+    touched = 1;
+}, false);
+
+function updateTouch() {
+    touched = 0;
+}
 
 function reset() {
     bird = new Bird();
@@ -301,9 +313,13 @@ function runGame() {
     pipes.update(dt);
     bird.update(dt, pipes.pipes);
 
-    ctx.font = '48px arial';
+    ctx.fillStyle = '#000000';
+    ctx.fillText(score.toString(), 15, 55, 500);
+    ctx.fillStyle = '#ffffff';
     ctx.fillText(score.toString(), 10, 50, 500);
+
     groundControl(dt);
+    updateTouch();
 }
 
 
@@ -329,7 +345,6 @@ function showStartImage(dt) {
     }
 
     ctx.drawImage(image, 0, 0, 500, 500);
-
 }
 
 function preGame() {
@@ -341,7 +356,7 @@ function preGame() {
 
     backgroundImg.onload = showBackground();
 
-    bird.show();
+    bird.show(maxSpeed = 15);
     bird.hover(dt);
 
     groundControl(dt);
@@ -350,9 +365,10 @@ function preGame() {
 
 let stage = 0;
 ctx.imageSmoothingEnabled = false;
+ctx.font = '48px Main';
 function loop() {
 
-    if (key.isPressed('space') && stage === 0) {
+    if ((key.isPressed('space') || touched) && stage === 0) {
         stage = 1
     }
 
@@ -362,6 +378,7 @@ function loop() {
         runGame()
     }
 
+    updateTouch();
     requestAnimationFrame(loop);
 }
 
