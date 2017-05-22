@@ -307,6 +307,7 @@ function updateTouch() {
 function reset() {
     bird = new Bird();
     pipes = new Pipes();
+    score = 0;
     stage = 0;
 }
 
