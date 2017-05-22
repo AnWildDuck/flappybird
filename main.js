@@ -107,8 +107,6 @@ class Bird {
         this.y += this.velocityY * dt;
         this.velocityY += dt * 1500;
         this.velocityY = Math.min(this.velocityY, 500);
-
-        this.y = Math.min(windowSize[1] - 12 * 2 - 23, this.y)
     }
 }
 
@@ -208,9 +206,9 @@ class Pipes {
     spawn(dt) {
         if (this.nextSpawn <= 0) {
             let scale = windowSize[1] / 500;
-            let gap = 100 * scale;
+            let gap = 130;
 
-            let y = Math.round(Math.random() * (500 - gap) + gap);
+            let y = Math.round(Math.random() * gap + gap);
 
             let obj = new Pipe(y, 0, this.image1, this.totalPipes);
             let obj2 = new Pipe(y - gap, 1, this.image2, this.totalPipes);
