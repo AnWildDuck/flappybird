@@ -249,7 +249,8 @@ function updateScore() {
     highScore = Math.max(highScore, score)
 }
 
-let grounds = Math.ceil(windowSize[0] / windowSize[1]);
+let grounds = Math.ceil(windowSize[0] / windowSize[1]) + 1;
+console.log(grounds);
 let dists = [];
 
 for (let i = 0; i < grounds; i ++) {
