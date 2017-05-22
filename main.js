@@ -31,7 +31,7 @@ function drawImage(image, x, y, width, height, rotation) {
 class Bird {
 
     constructor() {
-        this.x = 50;
+        this.x = windowSize[0] / 10;
         this.y = 200;
         this.velocityY = -200;
 
@@ -49,8 +49,10 @@ class Bird {
     update(dt, pipes) {
         this.move(dt);
         this.show();
+
+        let scale = windowSize[1] / 500;
         
-        if (this.touchingPipe(pipes) || this.y * (windowSize[1] / 500) >= windowSize[1] - 12 * 2 - 23) {
+        if (this.touchingPipe(pipes) || (this.y + this.height) >= 500) {
             reset()
         }
     }
@@ -77,14 +79,14 @@ class Bird {
         }
 
         let angle = (this.velocityY - 200) / 2000;
-        drawImage(image, this.x * scale, this.y * scale, this.width * scale, this.height * scale, angle);
+        drawImage(image, this.x, this.y * scale, this.width * scale, this.height * scale, angle);
 
         // ctx.fillStyle = 'black';
         // ctx.fillRect(this.x, this.y, 10, 10);
     }
 
     touchingPipe(pipes) {
-        let thisRect = [this.x, this.y, this.width, this.height];
+        let thisRect = [this.x / (windowSize[1] / 500), this.y, this.width, this.height];
 
         for (let pipe of pipes) {
             if (pipe.touching(thisRect)) {
@@ -107,8 +109,6 @@ class Bird {
         this.y += this.velocityY * dt;
         this.velocityY += dt * 1500;
         this.velocityY = Math.min(this.velocityY, 500);
-
-        this.y = Math.min(windowSize[1] - 12 * 2 - 23, this.y)
     }
 }
 
@@ -208,12 +208,14 @@ class Pipes {
     spawn(dt) {
         if (this.nextSpawn <= 0) {
             let scale = windowSize[1] / 500;
-            let gap = 100 * scale;
 
-            let y = Math.round(Math.random() * (500 - gap) + gap);
+            let gap = 150;
+            let margin = 120;
 
-            let obj = new Pipe(y, 0, this.image1, this.totalPipes);
-            let obj2 = new Pipe(y - gap, 1, this.image2, this.totalPipes);
+            let y = (Math.random() * ((500 - 23) - margin * 2)) + margin;
+
+            let obj = new Pipe(y + gap / 2, 0, this.image1, this.totalPipes);
+            let obj2 = new Pipe(y - gap / 2, 1, this.image2, this.totalPipes);
 
             this.totalPipes += 1;
 
@@ -228,21 +230,25 @@ class Pipes {
 }
 
 let score = 0;
+let highScore = 0;
+
 function updateScore() {
     let scores = [];
 
     // What is the closest pipe behind the bird?
     for (let pipe of pipes.pipes) {
-        if (pipe.x < bird.x) {
+        if (pipe.x < bird.x / (windowSize[1] / 500)) {
             scores.push(pipe.id)
         }
     }
 
     score = Math.max.apply(null, scores) + 1;
     score = Math.max(score, 0);
+
+    highScore = Math.max(highScore, score)
 }
 
-let grounds = Math.ceil(windowSize[0] / 496) + 1;
+let grounds = Math.ceil(windowSize[0] / windowSize[1]);
 let dists = [];
 
 for (let i = 0; i < grounds; i ++) {
@@ -299,7 +305,6 @@ function updateTouch() {
 function reset() {
     bird = new Bird();
     pipes = new Pipes();
-    updateScore();
     stage = 0;
 }
 
@@ -332,14 +337,32 @@ function runGame() {
     pipes.update(dt);
     bird.update(dt, pipes.pipes);
 
+    groundControl(dt);
+    showScore();
+    showHighScore();
+    updateTouch();
+}
+
+function showHighScore() {
+
+    let scale = windowSize[1] / 500;
+    let x = windowSize[0] - scale * 27 * highScore.toString().length - scale * 10;
+
+    ctx.fillStyle = '#000000';
+    ctx.fillText(highScore.toString(), x + 5 * scale, 55 * scale, windowSize[1]);
+    ctx.fillStyle = '#d6a728';
+    ctx.fillText(highScore.toString(), x, 50 * scale, windowSize[1]);
+
+}
+
+function showScore() {
+
     let scale = windowSize[1] / 500;
     ctx.fillStyle = '#000000';
     ctx.fillText(score.toString(), scale * 15, 55 * scale, windowSize[1]);
     ctx.fillStyle = '#ffffff';
     ctx.fillText(score.toString(), scale* 10, 50 * scale, windowSize[1]);
 
-    groundControl(dt);
-    updateTouch();
 }
 
 
@@ -379,7 +402,9 @@ function preGame() {
     bird.hover(dt);
 
     groundControl(dt);
-    showStartImage(dt)
+    showScore();
+    showHighScore();
+    showStartImage(dt);
 }
 
 let stage = 0;
@@ -392,7 +417,8 @@ ctx.font = fontString;
 function loop() {
 
     if ((key.isPressed('space') || touched) && stage === 0) {
-        stage = 1
+        stage = 1;
+        score = 0;
     }
 
     if (stage === 0) {
@@ -410,7 +436,7 @@ backgroundImg.src = 'background.png';
 function showBackground() {
 
     // How many do we need?
-    let amount = Math.ceil(windowSize[0] / 500);
+    let amount = Math.ceil(windowSize[0] / windowSize[1]);
 
     for (let i = 0; i < amount; i ++) {
         ctx.drawImage(backgroundImg, windowSize[1] * i, 0, windowSize[1], windowSize[1]);
