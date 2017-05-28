@@ -2,11 +2,78 @@
 canvas = document.getElementById('canvas');
 ctx = canvas.getContext('2d');
 
-let windowScale = 0.965;
+
+let windowScale = 1;
 let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowScale];
+let mousePos;
 
 canvas.width = windowSize[0];
 canvas.height = windowSize[1];
+
+document.onmousemove = function(e) {
+    mousePos = [e.pageX, e.pageY]
+};
+
+function touching(rect1, rect2) {
+    if (rect1[0] < rect2[0] + rect2[2]) {
+        if (rect1[0] + rect1[2] > rect2[0]) {
+            if (rect1[1] < rect2[1] + rect2[3]) {
+                if (rect1[1] + rect1[3] > rect2[1]) {
+                    return true
+                }
+            }
+        }
+    }
+    return false
+}
+
+let fullscreen = false;
+let buttonSize = 35;
+
+// Images
+let toFull = new Image();
+toFull.src = 'toFull.png';
+
+let fromFull = new Image();
+fromFull.src = 'fromFull.png';
+
+function showButton() {
+    let image;
+    if (fullscreen) {
+        image = fromFull;
+    } else {
+        image = toFull;
+    }
+
+    let windowScale = windowSize[1] / 500;
+
+    let x = windowSize[0] - (buttonSize + 20) * windowScale;
+    let y = windowSize[1] - (buttonSize + 20) * windowScale;
+
+    drawImage(image, x, y, buttonSize * windowScale, buttonSize * windowScale);
+}
+
+// Fullscreen button
+canvas.addEventListener('click', function() {
+
+    let windowScale = windowSize[1] / 500;
+    let mouseRect = [mousePos[0], mousePos[1], 0, 0];
+
+    let buttonRect = [windowSize[0] - (buttonSize + 20) * windowScale, windowSize[1] - (buttonSize + 20) * windowScale, windowScale * buttonSize, windowScale * buttonSize]
+
+    if (touching(mouseRect, buttonRect)) {
+
+        if (canvas.requestFullscreen) {
+            canvas.requestFullscreen();
+        } else if (canvas.webkitRequestFullscreen) {
+            canvas.webkitRequestFullscreen();
+        } else if (canvas.mozRequestFullScreen) {
+            canvas.mozRequestFullScreen();
+        } else if (canvas.msRequestFullscreen) {
+            canvas.msRequestFullscreen();
+        }
+    }
+});
 
 function loadImage(src) {
     let image = new Image();
@@ -250,7 +317,6 @@ function updateScore() {
 }
 
 let grounds = Math.ceil(windowSize[0] / windowSize[1]) + 1;
-console.log(grounds);
 let dists = [];
 
 for (let i = 0; i < grounds; i ++) {
@@ -429,6 +495,8 @@ function loop() {
     } else {
         runGame()
     }
+
+    showButton();
 
     updateTouch();
     requestAnimationFrame(loop);

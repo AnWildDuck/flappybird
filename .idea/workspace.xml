@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c53093d3-b8f0-4fdd-a4ad-3a0fd580beac" name="Default" comment="k">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.js" afterPath="$PROJECT_DIR$/main.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -22,8 +23,8 @@
             <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/main.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="320">
-                    <caret line="309" column="14" lean-forward="false" selection-start-line="309" selection-start-column="14" selection-end-line="309" selection-end-column="14" />
+                  <state relative-caret-position="352">
+                    <caret line="50" column="4" lean-forward="false" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
                     <folding />
                   </state>
                 </provider>
@@ -43,7 +44,7 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
+            <state relative-caret-position="108">
               <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
               <folding />
             </state>
@@ -54,18 +55,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>p</find>
-      <find>pips</find>
-      <find>pipes</find>
-      <find>sco</find>
-      <find>score</find>
-      <find>scoreUp</find>
-      <find>scoreU</find>
-      <find>up</find>
-      <find>upda</find>
-      <find>update</find>
-      <find>updatesc</find>
-      <find>updatesco</find>
       <find>updatescore</find>
       <find>b</find>
       <find>baxck</find>
@@ -80,10 +69,22 @@
       <find>co</find>
       <find>con</find>
       <find>conso</find>
-      <find>console</find>
       <find>run</find>
       <find>re</find>
       <find>reset</find>
+      <find>cvon</find>
+      <find>cvo</find>
+      <find>cv</find>
+      <find>c</find>
+      <find>console</find>
+      <find>console.</find>
+      <find>console.l</find>
+      <find>console.lo</find>
+      <find>console.log</find>
+      <find>ima</find>
+      <find>image</find>
+      <find>\n        if \(i\.requestFullscreen\) \{\n            i\.requestFullscreen\(\)\;\n        \} else if \(i\.webkitRequestFullscreen\) \{\n            i\.webkitRequestFullscreen\(\)\;\n        \} else if \(i\.mozRequestFullScreen\) \{\n            i\.mozRequestFullScreen\(\)\;\n        \} else if \(i\.msRequestFullscreen\) \{\n            i\.msRequestFullscreen\(\)\;\n        \}</find>
+      <find>i</find>
     </findStrings>
     <replaceStrings>
       <replace>let</replace>
@@ -137,6 +138,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -151,7 +153,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -289,11 +290,12 @@
       <workItem from="1495442346768" duration="3048000" />
       <workItem from="1495445905988" duration="595000" />
       <workItem from="1495446618926" duration="216000" />
+      <workItem from="1495942917801" duration="4757000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48566000" />
+    <option name="totallyTimeSpent" value="53323000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -339,6 +341,14 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -533,7 +543,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
+        <state relative-caret-position="108">
           <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
           <folding />
         </state>
@@ -541,8 +551,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="309" column="14" lean-forward="false" selection-start-line="309" selection-start-column="14" selection-end-line="309" selection-end-column="14" />
+        <state relative-caret-position="352">
+          <caret line="50" column="4" lean-forward="false" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
           <folding />
         </state>
       </provider>
