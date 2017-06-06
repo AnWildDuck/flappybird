@@ -2,7 +2,6 @@
 canvas = document.getElementById('canvas');
 ctx = canvas.getContext('2d');
 
-
 let windowScale = 1;
 let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowScale];
 let mousePos;
@@ -27,7 +26,6 @@ function touching(rect1, rect2) {
     return false
 }
 
-let fullscreen = false;
 let buttonSize = 35;
 
 // Images
@@ -38,8 +36,9 @@ let fromFull = new Image();
 fromFull.src = 'fromFull.png';
 
 function showButton() {
+
     let image;
-    if (fullscreen) {
+    if (window.innerHeight === screen.height) {
         image = fromFull;
     } else {
         image = toFull;
@@ -53,6 +52,35 @@ function showButton() {
     drawImage(image, x, y, buttonSize * windowScale, buttonSize * windowScale);
 }
 
+function exitFull() {
+
+    if (document.cancelFullScreen) {
+        document.cancelFullScreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+    }
+
+}
+
+function enterFull() {
+
+    window.moveTo(0, 0);
+
+    if (canvas.requestFullscreen) {
+        canvas.requestFullscreen();
+    } else if (canvas.webkitRequestFullscreen) {
+        canvas.webkitRequestFullscreen();
+    } else if (canvas.mozRequestFullScreen) {
+        canvas.mozRequestFullScreen();
+    } else if (canvas.msRequestFullscreen) {
+        canvas.msRequestFullscreen();
+    }
+
+    updateScreenSize();
+}
+
 // Fullscreen button
 canvas.addEventListener('click', function() {
 
@@ -61,16 +89,14 @@ canvas.addEventListener('click', function() {
 
     let buttonRect = [windowSize[0] - (buttonSize + 20) * windowScale, windowSize[1] - (buttonSize + 20) * windowScale, windowScale * buttonSize, windowScale * buttonSize]
 
+    // console.log(mousePos, buttonRect);
     if (touching(mouseRect, buttonRect)) {
 
-        if (canvas.requestFullscreen) {
-            canvas.requestFullscreen();
-        } else if (canvas.webkitRequestFullscreen) {
-            canvas.webkitRequestFullscreen();
-        } else if (canvas.mozRequestFullScreen) {
-            canvas.mozRequestFullScreen();
-        } else if (canvas.msRequestFullscreen) {
-            canvas.msRequestFullscreen();
+        // Try change fullscreen
+        if (window.innerHeight === screen.height) {
+            exitFull();
+        } else {
+            enterFull();
         }
     }
 });
@@ -350,7 +376,7 @@ let pipes = new Pipes();
 let spaceState = 0;
 let lastSpace = 0;
 function updateSpace() {
-    newState = Number(key.isPressed('space'));
+    let newState = Number(key.isPressed('space'));
 
     if (lastSpace - newState === -1) {
         spaceState = true
@@ -464,6 +490,8 @@ function showStartImage(dt) {
 
 function preGame() {
 
+    bird.x = windowSize[0] / 10;
+
     dt = getdt();
     showBackground();
 
@@ -483,8 +511,25 @@ let fontSize = (windowSize[1] / 500) * 48;
 let fontString = Math.round(eval(fontSize)).toString() + 'px Main';
 ctx.font = fontString;
 
+function updateScreenSize() {
+    windowSize = [window.innerWidth, window.innerHeight];
+
+    canvas.width = windowSize[0];
+    canvas.height = windowSize[1];
+
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
+
+    fontSize = (windowSize[1] / 500) * 48;
+    fontString = Math.round(eval(fontSize)).toString() + 'px Main';
+    ctx.font = fontString;
+
+}
+
 function loop() {
 
+    updateScreenSize();
     if ((key.isPressed('space') || touched) && stage === 0) {
         stage = 1;
         score = 0;
