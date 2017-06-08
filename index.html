@@ -1,51 +1,22 @@
-<!DOCTYPE html>
-
 <html>
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<style>
+	
+		@font-face {
+			font-family: "Main";
+			src: url("font.TTF")
+		}
+		
+		html {
+			overflow-y: hidden;
+			overflow-x: hidden;
+		}
+	
+	</style>
 
-    <head>
-        <title>A totally original game</title>
-
-        <style>
-
-            #canvas {
-                width: 100%;
-                height: 100%;
-            }
-
-            .container{
-                display: block;
-                float: left;
-                width: 100%;
-                margin-left: 0;
-                border-bottom: 2px solid rgba(255, 255, 255, 0.75);
-            }
-
-            @font-face {
-                font-family: "Main";
-                src: url("font.TTF")
-            }
-
-            h1 {
-                color: #229495;
-                background-color: #d5dFdA;
-                display: inline-block;
-                padding: 0px 50px;
-                margin: 0 10%;
-                font-family: "Comic Sans MS";
-            }
-        </style>
-    </head>
-
-    <body>
-    <p></p>
-
-    <canvas id="canvas"></canvas>
+	<canvas id="canvas"></canvas>
 
     <script src="keymaster.js"></script>
     <script src="main.js"></script>
 
-    </body>
 </html>

@@ -2,9 +2,9 @@
 canvas = document.getElementById('canvas');
 ctx = canvas.getContext('2d');
 
-let windowScale = 1;
-let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowScale];
-let mousePos;
+let windowScale = [1, 1];
+let windowSize = [window.innerWidth * windowScale[0], window.innerHeight * windowScale[1]];
+let mousePos = [0, 0];
 
 canvas.width = windowSize[0];
 canvas.height = windowSize[1];
@@ -44,22 +44,26 @@ function showButton() {
         image = toFull;
     }
 
-    let windowScale = windowSize[1] / 500;
+    let scale = windowSize[1] / 500;
 
-    let x = windowSize[0] - (buttonSize + 20) * windowScale;
-    let y = windowSize[1] - (buttonSize + 20) * windowScale;
+    let x = windowSize[0] - (buttonSize + 20) * scale;
+    let y = windowSize[1] - (buttonSize + 20) * scale;
 
-    drawImage(image, x, y, buttonSize * windowScale, buttonSize * windowScale);
+    drawImage(image, x, y, buttonSize * scale, buttonSize * scale);
+	
 }
 
 function exitFull() {
 
     if (document.cancelFullScreen) {
         document.cancelFullScreen();
+		return true;
     } else if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
+		return true;
     } else if (document.webkitCancelFullScreen) {
         document.webkitCancelFullScreen();
+		return true;
     }
 
 }
@@ -70,12 +74,16 @@ function enterFull() {
 
     if (canvas.requestFullscreen) {
         canvas.requestFullscreen();
+		return true;
     } else if (canvas.webkitRequestFullscreen) {
         canvas.webkitRequestFullscreen();
+		return true;
     } else if (canvas.mozRequestFullScreen) {
         canvas.mozRequestFullScreen();
+		return true;
     } else if (canvas.msRequestFullscreen) {
         canvas.msRequestFullscreen();
+		return true;
     }
 
     updateScreenSize();
@@ -96,7 +104,9 @@ canvas.addEventListener('click', function() {
         if (window.innerHeight === screen.height) {
             exitFull();
         } else {
-            enterFull();
+            if (enterFull()) {
+				windowScale = [1, 1];
+			};
         }
     }
 });
@@ -302,7 +312,7 @@ class Pipes {
         if (this.nextSpawn <= 0) {
             let scale = windowSize[1] / 500;
 
-            let gap = 150;
+            let gap = 130;
             let margin = 120;
 
             let y = (Math.random() * ((500 - 23) - margin * 2)) + margin;
@@ -488,6 +498,13 @@ function showStartImage(dt) {
     ctx.drawImage(image, (windowSize[0] - size[0]) / 2, (windowSize[1] - size[1]) / 2, size[0], size[1]);
 }
 
+function drawMouse() {
+	
+	ctx.fillStyle = '#000000';
+	ctx.rect(mousePos[0] - 5, mousePos[1] - 5, 10, 10);	
+	ctx.fill();
+}
+
 function preGame() {
 
     bird.x = windowSize[0] / 10;
@@ -502,6 +519,8 @@ function preGame() {
     showScore();
     showHighScore();
     showStartImage(dt);
+
+	// drawMouse();
 }
 
 let stage = 0;
@@ -512,7 +531,8 @@ let fontString = Math.round(eval(fontSize)).toString() + 'px Main';
 ctx.font = fontString;
 
 function updateScreenSize() {
-    windowSize = [window.innerWidth, window.innerHeight];
+
+    windowSize = [window.innerWidth * windowScale[0], window.innerHeight * windowScale[1]];
 
     canvas.width = windowSize[0];
     canvas.height = windowSize[1];
@@ -524,12 +544,26 @@ function updateScreenSize() {
     fontSize = (windowSize[1] / 500) * 48;
     fontString = Math.round(eval(fontSize)).toString() + 'px Main';
     ctx.font = fontString;
+	
+	let newGrounds = Math.ceil(windowSize[0] / windowSize[1]) + 1;
+	
+	if (newGrounds != grounds) {
+		
+		console.log(grounds);
+		
+		grounds = newGrounds;
+		dists = []
 
+		for (let i = 0; i < grounds; i ++) {
+			dists.push(i * 496)
+		}
+	}
 }
 
 function loop() {
 
     updateScreenSize();
+
     if ((key.isPressed('space') || touched) && stage === 0) {
         stage = 1;
         score = 0;
