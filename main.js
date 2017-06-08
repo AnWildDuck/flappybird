@@ -183,6 +183,16 @@ class Bird {
         }
 
         let angle = (this.velocityY - 200) / 2000;
+		
+		if (key.isPressed('h')) {
+			
+			ctx.fillStyle = '#ffffff';
+			ctx.fillRect(this.x, this.y * scale, this.width * scale, this.height * scale);
+			ctx.strokeStyle = '#f142f4';
+			ctx.rect(this.x, this.y * scale, this.width * scale, this.height * scale);
+			ctx.stroke();
+		};
+		
         drawImage(image, this.x, this.y * scale, this.width * scale, this.height * scale, angle);
 
         // ctx.fillStyle = 'black';
@@ -242,7 +252,17 @@ class Pipe {
 
     show() {
         let scale = windowSize[1] / 500;
-        ctx.drawImage(this.image, this.x * scale, this.y * scale, this.width * scale, this.height * scale);
+		
+		if (key.isPressed('h')) {
+			
+			ctx.fillStyle = '#ffffff';
+			ctx.fillRect(this.x * scale, this.y * scale, this.width * scale, this.height * scale);
+			ctx.strokeStyle = '#f142f4';
+			ctx.rect(this.x * scale, this.y * scale, this.width * scale, this.height * scale);
+			ctx.stroke();
+		};
+		ctx.drawImage(this.image, this.x * scale, this.y * scale, this.width * scale, this.height * scale);
+
     }
 
     move(dt) {
