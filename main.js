@@ -5,6 +5,7 @@ ctx = canvas.getContext('2d');
 let windowScale = [1, 1];
 let windowSize = [window.innerWidth * windowScale[0], window.innerHeight * windowScale[1]];
 let mousePos = [0, 0];
+let speed = 1.3;
 
 canvas.width = windowSize[0];
 canvas.height = windowSize[1];
@@ -245,7 +246,7 @@ class Pipe {
     }
 
     move(dt) {
-        this.x -= dt * 100
+        this.x -= dt * 100 * speed
     }
 
     touching(rect) {
@@ -325,7 +326,7 @@ class Pipes {
             this.pipes.push(obj);
             this.pipes.push(obj2);
 
-            this.nextSpawn = 2;
+            this.nextSpawn = 2 / speed;
         } else {
             this.nextSpawn -= dt;
         }
@@ -369,7 +370,7 @@ function groundControl(dt) {
     let newDists = [];
     for (dist of dists) {
 
-        newDist = dist - 100 * dt;
+        newDist = dist - 100 * dt * speed;
         if (newDist < -496) {
             newDist += 496 * (grounds);
         }
