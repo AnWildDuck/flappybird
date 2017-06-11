@@ -353,10 +353,11 @@ class Pipes {
     }
 }
 
+if (!localStorage.highScore) {
+	localStorage.highScore = 0;
+}
 
 let score = 0;
-let highScore = 0;
-
 function updateScore() {
     let scores = [];
 
@@ -370,7 +371,7 @@ function updateScore() {
     score = Math.max.apply(null, scores) + 1;
     score = Math.max(score, 0);
 
-    highScore = Math.max(highScore, score)
+    localStorage.highScore = Math.max(localStorage.highScore, score)
 }
 
 let grounds = Math.ceil(windowSize[0] / windowSize[1]) + 1;
@@ -472,12 +473,12 @@ function runGame() {
 function showHighScore() {
 
     let scale = windowSize[1] / 500;
-    let x = windowSize[0] - scale * 27 * highScore.toString().length - scale * 10;
+    let x = windowSize[0] - scale * 27 * localStorage.highScore.toString().length - scale * 10;
 
     ctx.fillStyle = '#000000';
-    ctx.fillText(highScore.toString(), x + 5 * scale, 55 * scale, windowSize[1]);
+    ctx.fillText(localStorage.highScore.toString(), x + 5 * scale, 55 * scale, windowSize[1]);
     ctx.fillStyle = '#d6a728';
-    ctx.fillText(highScore.toString(), x, 50 * scale, windowSize[1]);
+    ctx.fillText(localStorage.highScore.toString(), x, 50 * scale, windowSize[1]);
 
 }
 
