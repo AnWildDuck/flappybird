@@ -4,7 +4,7 @@ ctx = canvas.getContext('2d');
 
 let windowScale = 1;
 let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowScale];
-let mousePos;
+let mousePos = [0, 0];
 
 canvas.width = windowSize[0];
 canvas.height = windowSize[1];
@@ -488,6 +488,13 @@ function showStartImage(dt) {
     ctx.drawImage(image, (windowSize[0] - size[0]) / 2, (windowSize[1] - size[1]) / 2, size[0], size[1]);
 }
 
+function drawMouse() {
+	
+	ctx.fillStyle = '#000000';
+	ctx.rect(mousePos[0] - 5, mousePos[1] - 5, 10, 10);	
+	ctx.fill();
+}
+
 function preGame() {
 
     bird.x = windowSize[0] / 10;
@@ -502,6 +509,8 @@ function preGame() {
     showScore();
     showHighScore();
     showStartImage(dt);
+
+	drawMouse();
 }
 
 let stage = 0;
@@ -544,6 +553,7 @@ function loop() {
     showButton();
 
     updateTouch();
+	
     requestAnimationFrame(loop);
 }
 
