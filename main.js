@@ -2,9 +2,10 @@
 canvas = document.getElementById('canvas');
 ctx = canvas.getContext('2d');
 
-let windowScale = 1;
-let windowSize = [window.innerWidth * windowScale, window.innerHeight * windowScale];
+let windowScale = [1, 1];
+let windowSize = [window.innerWidth * windowScale[0], window.innerHeight * windowScale[1]];
 let mousePos = [0, 0];
+let speed = 1.3;
 
 canvas.width = windowSize[0];
 canvas.height = windowSize[1];
@@ -44,22 +45,26 @@ function showButton() {
         image = toFull;
     }
 
-    let windowScale = windowSize[1] / 500;
+    let scale = windowSize[1] / 500;
 
-    let x = windowSize[0] - (buttonSize + 20) * windowScale;
-    let y = windowSize[1] - (buttonSize + 20) * windowScale;
+    let x = windowSize[0] - (buttonSize + 20) * scale;
+    let y = windowSize[1] - (buttonSize + 20) * scale;
 
-    drawImage(image, x, y, buttonSize * windowScale, buttonSize * windowScale);
+    drawImage(image, x, y, buttonSize * scale, buttonSize * scale);
+	
 }
 
 function exitFull() {
 
     if (document.cancelFullScreen) {
         document.cancelFullScreen();
+		return true;
     } else if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
+		return true;
     } else if (document.webkitCancelFullScreen) {
         document.webkitCancelFullScreen();
+		return true;
     }
 
 }
@@ -70,12 +75,16 @@ function enterFull() {
 
     if (canvas.requestFullscreen) {
         canvas.requestFullscreen();
+		return true;
     } else if (canvas.webkitRequestFullscreen) {
         canvas.webkitRequestFullscreen();
+		return true;
     } else if (canvas.mozRequestFullScreen) {
         canvas.mozRequestFullScreen();
+		return true;
     } else if (canvas.msRequestFullscreen) {
         canvas.msRequestFullscreen();
+		return true;
     }
 
     updateScreenSize();
@@ -96,7 +105,9 @@ canvas.addEventListener('click', function() {
         if (window.innerHeight === screen.height) {
             exitFull();
         } else {
-            enterFull();
+            if (enterFull()) {
+				windowScale = [1, 1];
+			};
         }
     }
 });
@@ -172,6 +183,16 @@ class Bird {
         }
 
         let angle = (this.velocityY - 200) / 2000;
+		
+		if (key.isPressed('h')) {
+			
+			ctx.fillStyle = '#ffffff';
+			ctx.fillRect(this.x, this.y * scale, this.width * scale, this.height * scale);
+			ctx.strokeStyle = '#f142f4';
+			ctx.rect(this.x, this.y * scale, this.width * scale, this.height * scale);
+			ctx.stroke();
+		};
+		
         drawImage(image, this.x, this.y * scale, this.width * scale, this.height * scale, angle);
 
         // ctx.fillStyle = 'black';
@@ -194,7 +215,7 @@ class Bird {
         // Flap
         if (spaceState || touched) {
             if (this.y > 10) {
-                this.velocityY = -500;
+                this.velocityY = -400;
             }
         }
 
@@ -231,11 +252,21 @@ class Pipe {
 
     show() {
         let scale = windowSize[1] / 500;
-        ctx.drawImage(this.image, this.x * scale, this.y * scale, this.width * scale, this.height * scale);
+		
+		if (key.isPressed('h')) {
+			
+			ctx.fillStyle = '#ffffff';
+			ctx.fillRect(this.x * scale, this.y * scale, this.width * scale, this.height * scale);
+			ctx.strokeStyle = '#f142f4';
+			ctx.rect(this.x * scale, this.y * scale, this.width * scale, this.height * scale);
+			ctx.stroke();
+		};
+		ctx.drawImage(this.image, this.x * scale, this.y * scale, this.width * scale, this.height * scale);
+
     }
 
     move(dt) {
-        this.x -= dt * 100
+        this.x -= dt * 100 * speed
     }
 
     touching(rect) {
@@ -267,7 +298,7 @@ class Pipes {
 
     constructor() {
         this.pipes = [];
-        this.nextSpawn = 1;
+        this.nextSpawn = 0.7;
 
         this.totalPipes = 0;
 
@@ -302,7 +333,7 @@ class Pipes {
         if (this.nextSpawn <= 0) {
             let scale = windowSize[1] / 500;
 
-            let gap = 150;
+            let gap = 110;
             let margin = 120;
 
             let y = (Math.random() * ((500 - 23) - margin * 2)) + margin;
@@ -315,17 +346,18 @@ class Pipes {
             this.pipes.push(obj);
             this.pipes.push(obj2);
 
-            this.nextSpawn = 2;
+            this.nextSpawn = (2 / speed) * 0.8;
         } else {
             this.nextSpawn -= dt;
         }
     }
 }
 
+if (!localStorage.highScore) {
+	localStorage.highScore = 0;
+}
 
 let score = 0;
-let highScore = 0;
-
 function updateScore() {
     let scores = [];
 
@@ -339,7 +371,7 @@ function updateScore() {
     score = Math.max.apply(null, scores) + 1;
     score = Math.max(score, 0);
 
-    highScore = Math.max(highScore, score)
+    localStorage.highScore = Math.max(localStorage.highScore, score)
 }
 
 let grounds = Math.ceil(windowSize[0] / windowSize[1]) + 1;
@@ -359,7 +391,7 @@ function groundControl(dt) {
     let newDists = [];
     for (dist of dists) {
 
-        newDist = dist - 100 * dt;
+        newDist = dist - 100 * dt * speed;
         if (newDist < -496) {
             newDist += 496 * (grounds);
         }
@@ -441,12 +473,12 @@ function runGame() {
 function showHighScore() {
 
     let scale = windowSize[1] / 500;
-    let x = windowSize[0] - scale * 27 * highScore.toString().length - scale * 10;
+    let x = windowSize[0] - scale * 27 * localStorage.highScore.toString().length - scale * 10;
 
     ctx.fillStyle = '#000000';
-    ctx.fillText(highScore.toString(), x + 5 * scale, 55 * scale, windowSize[1]);
+    ctx.fillText(localStorage.highScore.toString(), x + 5 * scale, 55 * scale, windowSize[1]);
     ctx.fillStyle = '#d6a728';
-    ctx.fillText(highScore.toString(), x, 50 * scale, windowSize[1]);
+    ctx.fillText(localStorage.highScore.toString(), x, 50 * scale, windowSize[1]);
 
 }
 
@@ -509,8 +541,6 @@ function preGame() {
     showScore();
     showHighScore();
     showStartImage(dt);
-
-	drawMouse();
 }
 
 let stage = 0;
@@ -521,7 +551,8 @@ let fontString = Math.round(eval(fontSize)).toString() + 'px Main';
 ctx.font = fontString;
 
 function updateScreenSize() {
-    windowSize = [window.innerWidth, window.innerHeight];
+
+    windowSize = [window.innerWidth * windowScale[0], window.innerHeight * windowScale[1]];
 
     canvas.width = windowSize[0];
     canvas.height = windowSize[1];
@@ -533,12 +564,26 @@ function updateScreenSize() {
     fontSize = (windowSize[1] / 500) * 48;
     fontString = Math.round(eval(fontSize)).toString() + 'px Main';
     ctx.font = fontString;
+	
+	let newGrounds = Math.ceil(windowSize[0] / windowSize[1]) + 1;
+	
+	if (newGrounds != grounds) {
+		
+		console.log(grounds);
+		
+		grounds = newGrounds;
+		dists = []
 
+		for (let i = 0; i < grounds; i ++) {
+			dists.push(i * 496)
+		}
+	}
 }
 
 function loop() {
 
     updateScreenSize();
+
     if ((key.isPressed('space') || touched) && stage === 0) {
         stage = 1;
         score = 0;
@@ -550,10 +595,9 @@ function loop() {
         runGame()
     }
 
-    showButton();
-
+    showButton()
     updateTouch();
-	
+
     requestAnimationFrame(loop);
 }
 
